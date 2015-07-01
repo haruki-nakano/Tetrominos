@@ -60,6 +60,6 @@ void Lobby::singlePlayerPressed(cocos2d::Ref *pSender, ui::Widget::TouchEventTyp
 
 void Lobby::multiPlayerPressed(cocos2d::Ref *pSender, ui::Widget::TouchEventType eEventType) {
     if (eEventType == ui::Widget::TouchEventType::ENDED) {
-        CCLOG("2P mode");
+        CCLOG("2P mode is not implemented yet");
     }
 }
