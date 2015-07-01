@@ -17,6 +17,9 @@ public:
 
 private:
     bool init() override;
+    void onEnter() override;
+
+    void setupUI();
 };
 
 #endif /* defined(__Tetrominos__Lobby__) */
