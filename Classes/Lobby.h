@@ -10,6 +10,7 @@
 #define __Tetrominos__Lobby__
 
 #include "cocos2d.h"
+#include "CocosGUI.h"
 
 class Lobby : public cocos2d::Node {
 public:
@@ -20,6 +21,9 @@ private:
     void onEnter() override;
 
     void setupUI();
+
+    void singlePlayerPressed(cocos2d::Ref *pSender, cocos2d::ui::Widget::TouchEventType eEventType);
+    void multiPlayerPressed(cocos2d::Ref *pSender, cocos2d::ui::Widget::TouchEventType eEventType);
 };
 
 #endif /* defined(__Tetrominos__Lobby__) */

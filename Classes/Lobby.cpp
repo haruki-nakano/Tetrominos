@@ -7,7 +7,6 @@
 //
 
 #include "Lobby.h"
-#include "CocosGUI.h"
 
 using namespace cocos2d;
 
@@ -40,13 +39,21 @@ void Lobby::setupUI() {
     singlePlayerButton->setAnchorPoint(Vec2(0.5f, 0.5f));
     singlePlayerButton->setPosition(Vec2(visibleSize.width / 2.0f, visibleSize.height * 0.4f));
     singlePlayerButton->loadTextures("singlePlayerButton.png", "singlePlayerButtonPressed.png");
+    singlePlayerButton->addTouchEventListener(CC_CALLBACK_2(Lobby::singlePlayerPressed, this));
     this->addChild(singlePlayerButton);
 
     ui::Button *multiPlayerButton = ui::Button::create();
     multiPlayerButton->setAnchorPoint(Vec2(0.5f, 0.5f));
     multiPlayerButton->setPosition(Vec2(visibleSize.width / 2.0f, visibleSize.height * 0.25f));
     multiPlayerButton->loadTextures("multiplayerButton.png", "multiplayerButtonPressed.png");
+    multiPlayerButton->addTouchEventListener(CC_CALLBACK_2(Lobby::multiPlayerPressed, this));
     this->addChild(multiPlayerButton);
 
     return;
+}
+
+void Lobby::singlePlayerPressed(cocos2d::Ref *pSender, cocos2d::ui::Widget::TouchEventType eEventType) {
+}
+
+void Lobby::multiPlayerPressed(cocos2d::Ref *pSender, cocos2d::ui::Widget::TouchEventType eEventType) {
 }
