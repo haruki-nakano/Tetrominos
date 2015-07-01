@@ -4,36 +4,32 @@
 USING_NS_CC;
 
 AppDelegate::AppDelegate() {
-
 }
 
-AppDelegate::~AppDelegate() 
-{
+AppDelegate::~AppDelegate() {
 }
 
-//if you want a different context,just modify the value of glContextAttrs
-//it will takes effect on all platforms
-void AppDelegate::initGLContextAttrs()
-{
-    //set OpenGL context attributions,now can only set six attributions:
-    //red,green,blue,alpha,depth,stencil
+// if you want a different context,just modify the value of glContextAttrs
+// it will takes effect on all platforms
+void AppDelegate::initGLContextAttrs() {
+    // set OpenGL context attributions,now can only set six attributions:
+    // red,green,blue,alpha,depth,stencil
     GLContextAttrs glContextAttrs = {8, 8, 8, 8, 24, 8};
 
     GLView::setGLContextAttrs(glContextAttrs);
 }
 
-// If you want to use packages manager to install more packages, 
+// If you want to use packages manager to install more packages,
 // don't modify or remove this function
-static int register_all_packages()
-{
-    return 0; //flag for packages manager
+static int register_all_packages() {
+    return 0; // flag for packages manager
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
-    if(!glview) {
+    if (!glview) {
         glview = GLViewImpl::create("My Game");
         director->setOpenGLView(glview);
     }
@@ -43,6 +39,24 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
+
+    cocos2d::Size targetSize = glview->getFrameSize();
+
+    FileUtils::getInstance()->addSearchPath("res");
+
+    std::vector<std::string> searchResolutionOrder(1);
+
+    if (targetSize.height < 481.0f) {
+        searchResolutionOrder[0] = "resources-1x";
+    } else if (targetSize.height < 1335.0f) {
+        searchResolutionOrder[0] = "resources-2x";
+    } else if (targetSize.height < 1921.0f) {
+        searchResolutionOrder[0] = "resources-3x";
+    } else {
+        searchResolutionOrder[0] = "resources-4x";
+    }
+
+    FileUtils::getInstance()->setSearchResolutionsOrder(searchResolutionOrder);
 
     register_all_packages();
 
