@@ -25,6 +25,7 @@ bool GameScene::init() {
     this->addChild(background);
 
     this->tetrominoBag = std::unique_ptr<TetrominoBag>(new TetrominoBag());
+    this->active = false;
 
     return true;
 }
@@ -51,6 +52,8 @@ void GameScene::onEnter() {
     grid->spawnTetromino(randomTest);
 
     setupTouchHandling();
+
+    setGameActive(true);
 }
 
 void GameScene::setupTouchHandling() {
@@ -68,6 +71,19 @@ void GameScene::setupTouchHandling() {
 
 #pragma mark -
 #pragma mark Protected Methods
+
+void GameScene::setGameActive(bool active) {
+    this->active = active;
+    if (active) {
+        this->schedule(CC_SCHEDULE_SELECTOR(GameScene::step), INITIAL_STEP_INTERVAL);
+    } else {
+        this->unschedule(CC_SCHEDULE_SELECTOR(GameScene::step));
+    }
+}
+
+void GameScene::step(float dt) {
+    this->grid->step();
+}
 
 Tetromino *GameScene::createRandomTetromino() {
     TetrominoType tetrominoType = tetrominoBag->getTetromino();
