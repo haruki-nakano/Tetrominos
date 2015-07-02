@@ -24,6 +24,8 @@ bool GameScene::init() {
     LayerColor *background = LayerColor::create(Color4B(255, 255, 255, 255));
     this->addChild(background);
 
+    this->tetrominoBag = std::unique_ptr<TetrominoBag>(new TetrominoBag());
+
     return true;
 }
 void GameScene::onEnter() {
@@ -45,6 +47,9 @@ void GameScene::onEnter() {
 
     this->addChild(backButton);
 
+    Tetromino *randomTest = createRandomTetromino();
+    grid->spawnTetromino(randomTest);
+
     setupTouchHandling();
 }
 
@@ -62,11 +67,19 @@ void GameScene::setupTouchHandling() {
 #pragma mark Public Methods
 
 #pragma mark -
+#pragma mark Protected Methods
+
+Tetromino *GameScene::createRandomTetromino() {
+    TetrominoType tetrominoType = tetrominoBag->getTetromino();
+    Tetromino *newTetromino = Tetromino::createWithType(tetrominoType);
+    return newTetromino;
+}
+
+#pragma mark -
 #pragma mark UI Methods
 
 void GameScene::backButtonPressed(cocos2d::Ref *pSender, ui::Widget::TouchEventType eEventType) {
     if (eEventType == ui::Widget::TouchEventType::ENDED) {
         SceneManager::getInstance()->returnToLobby();
-        Director::getInstance()->popScene();
     }
 }

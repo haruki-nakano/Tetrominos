@@ -73,6 +73,8 @@
 		71082D8F1B44AFCD006512F0 /* Coordinate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71082D8C1B44AFCD006512F0 /* Coordinate.cpp */; };
 		71082D921B44B3EF006512F0 /* JSONPacker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71082D901B44B3EF006512F0 /* JSONPacker.cpp */; };
 		71082D931B44B3EF006512F0 /* JSONPacker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71082D901B44B3EF006512F0 /* JSONPacker.cpp */; };
+		71082D961B45DCA8006512F0 /* TetrominoBag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71082D941B45DCA8006512F0 /* TetrominoBag.cpp */; };
+		71082D971B45DCA8006512F0 /* TetrominoBag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71082D941B45DCA8006512F0 /* TetrominoBag.cpp */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
@@ -180,6 +182,8 @@
 		71082D8D1B44AFCD006512F0 /* Coordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coordinate.h; sourceTree = "<group>"; };
 		71082D901B44B3EF006512F0 /* JSONPacker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JSONPacker.cpp; sourceTree = "<group>"; };
 		71082D911B44B3EF006512F0 /* JSONPacker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONPacker.h; sourceTree = "<group>"; };
+		71082D941B45DCA8006512F0 /* TetrominoBag.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TetrominoBag.cpp; sourceTree = "<group>"; };
+		71082D951B45DCA8006512F0 /* TetrominoBag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TetrominoBag.h; sourceTree = "<group>"; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -324,6 +328,8 @@
 				71082D8C1B44AFCD006512F0 /* Coordinate.cpp */,
 				71082D8D1B44AFCD006512F0 /* Coordinate.h */,
 				71082D771B44861A006512F0 /* GameScene.cpp */,
+				71082D941B45DCA8006512F0 /* TetrominoBag.cpp */,
+				71082D951B45DCA8006512F0 /* TetrominoBag.h */,
 				71082D781B44861A006512F0 /* GameScene.h */,
 				71082D801B44A490006512F0 /* Grid.cpp */,
 				71082D811B44A490006512F0 /* Grid.h */,
@@ -544,6 +550,7 @@
 				71082D791B44861A006512F0 /* GameScene.cpp in Sources */,
 				71082D8E1B44AFCD006512F0 /* Coordinate.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
+				71082D961B45DCA8006512F0 /* TetrominoBag.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				71082D861B44A84D006512F0 /* Tetromino.cpp in Sources */,
 				71082D921B44B3EF006512F0 /* JSONPacker.cpp in Sources */,
@@ -562,6 +569,7 @@
 				71082D831B44A490006512F0 /* Grid.cpp in Sources */,
 				71082D8F1B44AFCD006512F0 /* Coordinate.cpp in Sources */,
 				71082D931B44B3EF006512F0 /* JSONPacker.cpp in Sources */,
+				71082D971B45DCA8006512F0 /* TetrominoBag.cpp in Sources */,
 				46880B8B19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */,
 				71082D871B44A84D006512F0 /* Tetromino.cpp in Sources */,
 			);

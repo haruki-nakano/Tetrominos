@@ -24,9 +24,6 @@ bool Grid::init() {
 
 void Grid::onEnter() {
     Sprite::onEnter();
-
-    this->activeTetromino = Tetromino::createWithType(TetrominoType::L);
-    this->addChild(activeTetromino);
 }
 
 #pragma mark -
@@ -38,4 +35,11 @@ void Grid::rotateActiveTetromino() {
     }
 
     // TODO: Check if collision, under rotation
+}
+
+void Grid::spawnTetromino(Tetromino *tetromino) {
+    this->activeTetromino = tetromino;
+    this->addChild(this->activeTetromino);
+
+    // TODO place tetromino in corret position in grid.
 }

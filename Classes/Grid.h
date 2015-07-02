@@ -10,13 +10,15 @@
 #define __Tetrominos__Grid__
 
 #include "cocos2d.h"
-#include "Tetromino.h"
+
+class Tetromino;
 
 class Grid : public cocos2d::Sprite {
 public:
     CREATE_FUNC(Grid);
 
     void rotateActiveTetromino();
+    void spawnTetromino(Tetromino *tetromino);
 
 private:
     Tetromino *activeTetromino;
