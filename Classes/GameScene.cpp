@@ -9,8 +9,12 @@
 #include "GameScene.h"
 #include "SceneManager.h"
 #include "Grid.h"
+#include "Tetromino.h"
 
 using namespace cocos2d;
+
+#pragma mark -
+#pragma mark Lifycycle
 
 bool GameScene::init() {
     if (!Node::init()) {
@@ -40,11 +44,29 @@ void GameScene::onEnter() {
     backButton->addTouchEventListener(CC_CALLBACK_2(GameScene::backButtonPressed, this));
 
     this->addChild(backButton);
+
+    setupTouchHandling();
 }
+
+void GameScene::setupTouchHandling() {
+    auto touchListener = EventListenerTouchOneByOne::create();
+
+    touchListener->onTouchBegan = [&](Touch *touch, Event *event) { return true; };
+
+    touchListener->onTouchEnded = [&](Touch *touch, Event *event) { grid->rotateActiveTetromino(); };
+
+    this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, this);
+}
+
+#pragma mark -
+#pragma mark Public Methods
+
+#pragma mark -
+#pragma mark UI Methods
 
 void GameScene::backButtonPressed(cocos2d::Ref *pSender, ui::Widget::TouchEventType eEventType) {
     if (eEventType == ui::Widget::TouchEventType::ENDED) {
         SceneManager::getInstance()->returnToLobby();
-        // Director::getInstance()->popScene();
+        Director::getInstance()->popScene();
     }
 }

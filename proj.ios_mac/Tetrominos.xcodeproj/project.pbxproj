@@ -324,11 +324,9 @@
 				71082D8C1B44AFCD006512F0 /* Coordinate.cpp */,
 				71082D8D1B44AFCD006512F0 /* Coordinate.h */,
 				71082D771B44861A006512F0 /* GameScene.cpp */,
-				71082D841B44A84D006512F0 /* Tetromino.cpp */,
-				71082D851B44A84D006512F0 /* Tetromino.h */,
+				71082D781B44861A006512F0 /* GameScene.h */,
 				71082D801B44A490006512F0 /* Grid.cpp */,
 				71082D811B44A490006512F0 /* Grid.h */,
-				71082D781B44861A006512F0 /* GameScene.h */,
 				46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */,
 				46880B8719C43A87006E1F66 /* HelloWorldScene.h */,
 				71082D901B44B3EF006512F0 /* JSONPacker.cpp */,
@@ -337,6 +335,8 @@
 				71082D731B447DD0006512F0 /* Lobby.h */,
 				71082D7C1B4498E7006512F0 /* SceneManager.cpp */,
 				71082D7D1B4498E7006512F0 /* SceneManager.h */,
+				71082D841B44A84D006512F0 /* Tetromino.cpp */,
+				71082D851B44A84D006512F0 /* Tetromino.h */,
 			);
 			name = Classes;
 			path = ../Classes;
