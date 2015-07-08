@@ -22,6 +22,9 @@ public:
     int getHighestYCoordinate();
     int getWidthInBlocks();
 
+    std::vector<int> getSkirt();
+    int getMininumXCoordinate();
+
 private:
     TetrominoType type;
     std::vector<std::vector<Coordinate>> rotations;

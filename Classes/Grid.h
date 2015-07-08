@@ -34,6 +34,7 @@ private:
     bool init() override;
     void onEnter() override;
     cocos2d::Vec2 convertCoordinateToPosition(Coordinate Coordinate);
+    bool checkIfTetrominoCollides(Tetromino *tetromino, Coordinate tetrominoCoordinate);
 };
 
 #endif /* defined(__Tetrominos__Grid__) */

@@ -68,6 +68,10 @@ void Grid::step() {
 
 void Grid::setActiveTetrominoCoordinate(Coordinate coordinate) {
     if (activeTetromino) {
+        if (this->checkIfTetrominoCollides(activeTetromino, coordinate)) {
+            return;
+        }
+
         activeTetrominoCoordinate = coordinate;
         activeTetromino->setPosition(this->convertCoordinateToPosition(activeTetrominoCoordinate));
     }
@@ -95,4 +99,21 @@ cocos2d::Vec2 Grid::convertCoordinateToPosition(Coordinate coordinate) {
     float blockHeight = contentSize.height / float(GRID_HEIGHT);
 
     return Vec2(coordinate.x * blockWidth, coordinate.y * blockHeight);
+}
+
+bool Grid::checkIfTetrominoCollides(Tetromino *tetromino, Coordinate tetrominoCoordinate) {
+    int skirtStart = tetromino->getMininumXCoordinate();
+    std::vector<int> skirt = tetromino->getSkirt();
+
+    for (int i = 0; i < skirt.size(); i++) {
+        Coordinate localCoordinate = Coordinate(i + skirtStart, skirt[i]);
+        Coordinate gridCoordinate = Coordinate::add(tetrominoCoordinate, localCoordinate);
+
+        if (gridCoordinate.x < 0 || gridCoordinate.y < 0 || gridCoordinate.x >= GRID_WIDTH ||
+            gridCoordinate.y >= GRID_HEIGHT) {
+            return true;
+        }
+    }
+
+    return false;
 }
