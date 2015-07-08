@@ -59,9 +59,60 @@ void GameScene::onEnter() {
 void GameScene::setupTouchHandling() {
     auto touchListener = EventListenerTouchOneByOne::create();
 
-    touchListener->onTouchBegan = [&](Touch *touch, Event *event) { return true; };
+    static Vec2 firstTouchPos;
+    static Vec2 lastTouchPos;
+    static bool allowRotate;
 
-    touchListener->onTouchEnded = [&](Touch *touch, Event *event) { grid->rotateActiveTetromino(); };
+    touchListener->onTouchBegan = [&](Touch *touch, Event *event) {
+        firstTouchPos = this->convertTouchToNodeSpace(touch);
+        lastTouchPos = firstTouchPos;
+        allowRotate = true;
+        return true;
+    };
+
+    touchListener->onTouchMoved = [&](Touch *touch, Event *event) {
+        Vec2 touchPos = this->convertTouchToNodeSpace(touch);
+        Vec2 difference = touchPos - lastTouchPos;
+
+        Tetromino *activeTetromino = grid->getActiveTetromino();
+
+        if (activeTetromino) {
+            Coordinate touchCoordinate = this->convertPositionToCoordinate(touchPos);
+            Coordinate differenceCoordinate = this->convertPositionToCoordinate(difference);
+            Coordinate activeTetrominoCoordinate = grid->getActiveTetrominoCoordinate();
+
+            if (abs(differenceCoordinate.x) >= 1) {
+                Coordinate newTetrominoCoordinate;
+                /*
+                                if (differenceCoordinate.x > 0) {
+                                    // move left
+                 */
+                bool movingRight = (differenceCoordinate.x > 0);
+                newTetrominoCoordinate =
+                    Coordinate(activeTetrominoCoordinate.x + (movingRight ? 1 : -1), activeTetrominoCoordinate.y);
+                /*
+            } else {
+                // move right
+                newTetrominoCoordinate = Coordinate(activeTetrominoCoordinate.x + 1, activeTetrominoCoordinate.y);
+            }
+                 */
+                grid->setActiveTetrominoCoordinate(newTetrominoCoordinate);
+                allowRotate = false;
+                lastTouchPos = touchPos;
+            }
+        }
+    };
+
+    touchListener->onTouchEnded = [&](Touch *touch, Event *event) {
+        Vec2 touchEndPos = this->convertTouchToNodeSpace(touch);
+
+        float diffrence = touchEndPos.distance(firstTouchPos);
+        Size blockSize = this->grid->getBlockSize();
+
+        if (diffrence < blockSize.width && allowRotate) {
+            grid->rotateActiveTetromino();
+        }
+    };
 
     this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, this);
 }
@@ -98,4 +149,12 @@ void GameScene::backButtonPressed(cocos2d::Ref *pSender, ui::Widget::TouchEventT
     if (eEventType == ui::Widget::TouchEventType::ENDED) {
         SceneManager::getInstance()->returnToLobby();
     }
+}
+
+#pragma mark -
+#pragma mark UtilityMethods
+
+Coordinate GameScene::convertPositionToCoordinate(cocos2d::Vec2 position) {
+    Size blockSize = this->grid->getBlockSize();
+    return Coordinate(position.x / blockSize.width, position.y / blockSize.height);
 }

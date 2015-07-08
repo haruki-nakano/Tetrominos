@@ -12,6 +12,7 @@
 #include "cocos2d.h"
 #include "CocosGUI.h"
 #include "TetrominoBag.h"
+#include "Coordinate.h"
 
 class Grid;
 class Tetromino;
@@ -31,6 +32,7 @@ protected:
     Tetromino *createRandomTetromino();
     void setGameActive(bool active);
     void step(float dt);
+    Coordinate convertPositionToCoordinate(cocos2d::Vec2 position);
 
     void backButtonPressed(cocos2d::Ref *pSender, cocos2d::ui::Widget::TouchEventType eEventType);
 };

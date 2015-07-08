@@ -24,6 +24,8 @@ public:
 
     void setActiveTetrominoCoordinate(Coordinate coordinate);
     Coordinate getActiveTetrominoCoordinate();
+    cocos2d::Size getBlockSize();
+    Tetromino *getActiveTetromino();
 
 private:
     Tetromino *activeTetromino;
