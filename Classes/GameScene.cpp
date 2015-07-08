@@ -83,20 +83,12 @@ void GameScene::setupTouchHandling() {
 
             if (abs(differenceCoordinate.x) >= 1) {
                 Coordinate newTetrominoCoordinate;
-                /*
-                                if (differenceCoordinate.x > 0) {
-                                    // move left
-                 */
+
                 bool movingRight = (differenceCoordinate.x > 0);
                 newTetrominoCoordinate =
                     Coordinate(activeTetrominoCoordinate.x + (movingRight ? 1 : -1), activeTetrominoCoordinate.y);
-                /*
-            } else {
-                // move right
-                newTetrominoCoordinate = Coordinate(activeTetrominoCoordinate.x + 1, activeTetrominoCoordinate.y);
-            }
-                 */
                 grid->setActiveTetrominoCoordinate(newTetrominoCoordinate);
+
                 allowRotate = false;
                 lastTouchPos = touchPos;
             }
