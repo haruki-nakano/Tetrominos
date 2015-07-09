@@ -37,7 +37,9 @@ void Grid::rotateActiveTetromino() {
         this->activeTetromino->rotate(true);
     }
 
-    // TODO: Check if collision, under rotation
+    if (this->checkIfTetrominoCollides(activeTetromino, activeTetrominoCoordinate)) {
+        this->activeTetromino->rotate(false);
+    }
 }
 
 void Grid::spawnTetromino(Tetromino *tetromino) {

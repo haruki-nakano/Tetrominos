@@ -6,6 +6,8 @@
 //
 //
 
+#include <Time.h>
+
 #include "GameScene.h"
 #include "SceneManager.h"
 #include "Grid.h"
@@ -62,11 +64,13 @@ void GameScene::setupTouchHandling() {
     static Vec2 firstTouchPos;
     static Vec2 lastTouchPos;
     static bool allowRotate;
+    static std::clock_t touchStartedTime;
 
     touchListener->onTouchBegan = [&](Touch *touch, Event *event) {
         firstTouchPos = this->convertTouchToNodeSpace(touch);
         lastTouchPos = firstTouchPos;
         allowRotate = true;
+        touchStartedTime = clock();
         return true;
     };
 
@@ -81,7 +85,12 @@ void GameScene::setupTouchHandling() {
             Coordinate differenceCoordinate = this->convertPositionToCoordinate(difference);
             Coordinate activeTetrominoCoordinate = grid->getActiveTetrominoCoordinate();
 
-            if (abs(differenceCoordinate.x) >= 1) {
+            if (differenceCoordinate.y <= -1) {
+                Coordinate newTetrominoCoordinate =
+                    Coordinate(activeTetrominoCoordinate.x, activeTetrominoCoordinate.y - 1);
+                grid->setActiveTetrominoCoordinate(newTetrominoCoordinate);
+                lastTouchPos = touchPos;
+            } else if (abs(differenceCoordinate.x) >= 1) {
                 Coordinate newTetrominoCoordinate;
 
                 bool movingRight = (differenceCoordinate.x > 0);
@@ -97,12 +106,25 @@ void GameScene::setupTouchHandling() {
 
     touchListener->onTouchEnded = [&](Touch *touch, Event *event) {
         Vec2 touchEndPos = this->convertTouchToNodeSpace(touch);
-
-        float diffrence = touchEndPos.distance(firstTouchPos);
+        float distance = touchEndPos.distance(firstTouchPos);
         Size blockSize = this->grid->getBlockSize();
 
-        if (diffrence < blockSize.width && allowRotate) {
+        if (distance < blockSize.width && allowRotate) {
             grid->rotateActiveTetromino();
+        } else {
+            Vec2 difference = touchEndPos - firstTouchPos;
+            std::clock_t clockDifference = clock() - touchStartedTime;
+
+            if (clockDifference <= 0) {
+                return;
+            }
+
+            float touchDuratioin = (float)(clockDifference) / CLOCKS_PER_SEC;
+            float velocity = fabsf(difference.y / touchDuratioin);
+
+            if (velocity > DROP_VELOCITY) {
+                CCLOG("DROP");
+            }
         }
     };
 
