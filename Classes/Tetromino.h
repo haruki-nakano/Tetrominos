@@ -20,10 +20,12 @@ public:
     void rotate(bool right);
 
     int getHighestYCoordinate();
+    int getMininumXCoordinate();
     int getWidthInBlocks();
 
     std::vector<int> getSkirt();
-    int getMininumXCoordinate();
+    std::vector<cocos2d::Sprite *> getBlocks();
+    std::vector<Coordinate> getCurrentRotation();
 
 private:
     TetrominoType type;

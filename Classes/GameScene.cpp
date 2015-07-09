@@ -124,6 +124,7 @@ void GameScene::setupTouchHandling() {
 
             if (velocity > DROP_VELOCITY) {
                 CCLOG("DROP");
+                // TODO Implement here
             }
         }
     };
