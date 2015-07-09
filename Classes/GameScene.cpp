@@ -105,26 +105,27 @@ void GameScene::setupTouchHandling() {
     };
 
     touchListener->onTouchEnded = [&](Touch *touch, Event *event) {
-        Vec2 touchEndPos = this->convertTouchToNodeSpace(touch);
-        float distance = touchEndPos.distance(firstTouchPos);
-        Size blockSize = this->grid->getBlockSize();
+        if (this->grid->getActiveTetromino()) {
+            Vec2 touchEndPos = this->convertTouchToNodeSpace(touch);
+            float distance = touchEndPos.distance(firstTouchPos);
+            Size blockSize = this->grid->getBlockSize();
 
-        if (distance < blockSize.width && allowRotate) {
-            grid->rotateActiveTetromino();
-        } else {
-            Vec2 difference = touchEndPos - firstTouchPos;
-            std::clock_t clockDifference = clock() - touchStartedTime;
+            if (distance < blockSize.width && allowRotate) {
+                grid->rotateActiveTetromino();
+            } else {
+                Vec2 difference = touchEndPos - firstTouchPos;
+                std::clock_t clockDifference = clock() - touchStartedTime;
 
-            if (clockDifference <= 0) {
-                return;
-            }
+                if (clockDifference <= 0) {
+                    return;
+                }
 
-            float touchDuratioin = (float)(clockDifference) / CLOCKS_PER_SEC;
-            float velocity = fabsf(difference.y / touchDuratioin);
+                float touchDuratioin = (float)(clockDifference) / CLOCKS_PER_SEC;
+                float velocity = fabsf(difference.y / touchDuratioin);
 
-            if (velocity > DROP_VELOCITY) {
-                CCLOG("DROP");
-                // TODO Implement here
+                if (velocity > DROP_VELOCITY) {
+                    grid->dropActiveTetromino();
+                }
             }
         }
     };
