@@ -81,7 +81,7 @@ void GameScene::setupTouchHandling() {
         Tetromino *activeTetromino = grid->getActiveTetromino();
 
         if (activeTetromino) {
-            Coordinate touchCoordinate = this->convertPositionToCoordinate(touchPos);
+            // Coordinate touchCoordinate = this->convertPositionToCoordinate(touchPos);
             Coordinate differenceCoordinate = this->convertPositionToCoordinate(difference);
             Coordinate activeTetrominoCoordinate = grid->getActiveTetrominoCoordinate();
 

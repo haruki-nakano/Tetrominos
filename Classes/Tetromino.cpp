@@ -147,3 +147,7 @@ std::vector<Sprite *> Tetromino::getBlocks() {
 std::vector<Coordinate> Tetromino::getCurrentRotation() {
     return rotations[rotationIndex];
 }
+
+TetrominoType Tetromino::getTetrominoType() {
+    return this->type;
+}

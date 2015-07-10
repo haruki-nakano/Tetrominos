@@ -40,10 +40,12 @@ void Grid::onEnter() {
 void Grid::rotateActiveTetromino() {
     if (this->activeTetromino) {
         this->activeTetromino->rotate(true);
-    }
-
-    if (this->checkIfTetrominoCollides(activeTetromino, activeTetrominoCoordinate)) {
-        this->activeTetromino->rotate(false);
+        if (this->checkIfTetrominoCollides(activeTetromino, activeTetrominoCoordinate)) {
+            this->activeTetromino->rotate(false);
+        } else {
+            ghostTetromino->rotate(true);
+            this->updateGhostTetrominoPositino();
+        }
     }
 }
 
@@ -67,7 +69,14 @@ void Grid::spawnTetromino(Tetromino *tetromino) {
 
     this->addChild(this->activeTetromino);
 
-    // TODO place tetromino in corret position in grid.
+    // Add ghost
+    this->ghostTetromino = activeTetromino->createWithType(activeTetromino->getTetrominoType());
+
+    this->ghostTetromino->setCascadeOpacityEnabled(true);
+    this->ghostTetromino->setOpacity(70);
+    this->updateGhostTetrominoPositino();
+
+    this->addChild(ghostTetromino);
 }
 
 void Grid::step() {
@@ -94,6 +103,7 @@ void Grid::setActiveTetrominoCoordinate(Coordinate coordinate) {
 
         activeTetrominoCoordinate = coordinate;
         activeTetromino->setPosition(this->convertCoordinateToPosition(activeTetrominoCoordinate));
+        this->updateGhostTetrominoPositino();
     }
 }
 
@@ -147,6 +157,11 @@ void Grid::deactivateTetromino(Tetromino *tetromino, Coordinate tetrominoCoordin
 
     this->activeTetromino->removeFromParent();
     this->activeTetromino = nullptr;
+
+    this->ghostTetromino->removeFromParent();
+    this->ghostTetromino = nullptr;
+
+    this->clearLines();
 }
 
 void Grid::placeTetrominoOnBoard(Tetromino *tetromino, Coordinate tetrominoCoordinate) {
@@ -182,4 +197,46 @@ Coordinate Grid::getTetrominoLandingCoordinate() {
         }
     }
     return landingCoordinate;
+}
+
+void Grid::clearLines() {
+    for (int y = 0; y < GRID_HEIGHT; y++) {
+        bool fullLine = true;
+        std::vector<Sprite *> row = blocksLanded[y];
+        for (int x = 0; x < GRID_WIDTH; x++) {
+            if (!row[x]) {
+                fullLine = false;
+                break;
+            }
+        }
+        if (fullLine) {
+            for (Sprite *block : row) {
+                block->removeFromParent();
+            }
+
+            blocksLanded.erase(blocksLanded.begin() + y);
+
+            std::vector<std::vector<Sprite *>> rowsToMoveDown(blocksLanded.begin() + y, blocksLanded.end());
+
+            for (std::vector<Sprite *> rowAbove : rowsToMoveDown) {
+                for (Sprite *block : rowAbove) {
+                    if (block) {
+                        block->setPositionY(block->getPositionY() - block->getContentSize().height);
+                    }
+                }
+            }
+
+            std::vector<Sprite *> newRow(GRID_WIDTH, nullptr);
+            blocksLanded.push_back(newRow);
+
+            y--;
+        }
+    }
+}
+
+void Grid::updateGhostTetrominoPositino() {
+    if (ghostTetromino) {
+        Coordinate landingCoordinate = this->getTetrominoLandingCoordinate();
+        ghostTetromino->setPosition(this->convertCoordinateToPosition(landingCoordinate));
+    }
 }
