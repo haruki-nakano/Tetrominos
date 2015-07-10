@@ -19,6 +19,16 @@ struct TetrominoState {
     std::vector<std::vector<Coordinate>> rotations;
 };
 
+struct GameState {
+    std::string name;
+    bool gameOver;
+    int score;
+    std::vector<std::vector<cocos2d::Color3B>> board;
+};
+
+GameState unpackGameStateJSON(std::string json);
+std::string packGameStateJSON(const GameState data);
+
 TetrominoState unpackTetrominoJSON(std::string json, TetrominoType type);
 }
 

@@ -21,6 +21,8 @@ class GameScene : public cocos2d::Node {
 public:
     CREATE_FUNC(GameScene);
 
+    void setNetworkedSession(bool networkedSession);
+
 protected:
     Grid *grid;
     std::unique_ptr<TetrominoBag> tetrominoBag;
@@ -30,6 +32,7 @@ protected:
     int totalScore;
     float stepInterval;
     float timeLeft;
+    bool networkedSession;
 
     // Lifecycle
     bool init() override;

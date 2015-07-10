@@ -73,4 +73,70 @@ TetrominoState unpackTetrominoJSON(std::string json, TetrominoType type) {
 
     return tetrominoState;
 }
+
+GameState unpackGameStateJSON(std::string json) {
+    rapidjson::Document document;
+    document.Parse<0>(json.c_str());
+
+    GameState gameState;
+
+    gameState.score = document["score"].GetInt();
+    gameState.name = document["name"].GetString();
+    gameState.gameOver = document["gameOver"].GetBool();
+
+    rapidjson::Value &columns = document["board"];
+
+    // Convert Color3B in the grid to JSON obejcts
+    for (rapidjson::SizeType column = 0; column < columns.Size(); column++) {
+        rapidjson::Value &blocksJson = columns["column"];
+        std::vector<Color3B> blocks;
+
+        for (rapidjson::SizeType i; i < blocksJson.Size(); i++) {
+            rapidjson::Value &block = blocksJson[i];
+            int r = block["r"].GetInt();
+            int g = block["g"].GetInt();
+            int b = block["b"].GetInt();
+
+            Color3B color3B = Color3B(r, g, b);
+
+            blocks.push_back(color3B);
+        }
+        gameState.board.push_back(blocks);
+    }
+
+    return gameState;
+}
+
+std::string packGameStateJSON(const GameState gameState) {
+    rapidjson::Document document;
+    document.SetObject();
+    document.AddMember("score", gameState.score, document.GetAllocator());
+    document.AddMember("name", gameState.name.c_str(), document.GetAllocator());
+    document.AddMember("gameOver", gameState.gameOver, document.GetAllocator());
+
+    rapidjson::Value columns(rapidjson::kArrayType);
+    for (int column; column < gameState.board.size(); column++) {
+        rapidjson::Value blocks(rapidjson::kArrayType);
+        for (int i; i < gameState.board[column].size(); i++) {
+            Color3B color = gameState.board[column][i];
+            rapidjson::Value colorJson(rapidjson::kObjectType);
+            colorJson.AddMember("r", color.r, document.GetAllocator());
+            colorJson.AddMember("g", color.g, document.GetAllocator());
+            colorJson.AddMember("b", color.b, document.GetAllocator());
+
+            blocks.PushBack(colorJson, document.GetAllocator());
+        }
+        columns.PushBack(blocks, document.GetAllocator());
+    }
+
+    document.AddMember("board", columns, document.GetAllocator());
+
+    rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+    document.Accept(writer);
+
+    std::string returnString(buffer.GetString(), buffer.Size());
+
+    return returnString;
+}
 }

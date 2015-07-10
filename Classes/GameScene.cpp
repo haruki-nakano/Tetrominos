@@ -33,6 +33,7 @@ bool GameScene::init() {
     this->active = false;
     this->totalScore = 0;
     this->timeLeft = TIME_PER_GAME;
+    this->networkedSession = false;
 
     return true;
 }
@@ -154,6 +155,10 @@ void GameScene::setupTouchHandling() {
 
 #pragma mark -
 #pragma mark Public Methods
+
+void GameScene::setNetworkedSession(bool networkedSession) {
+    this->networkedSession = networkedSession;
+}
 
 #pragma mark -
 #pragma mark Protected Methods
