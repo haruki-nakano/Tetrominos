@@ -43,6 +43,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     cocos2d::Size targetSize = glview->getFrameSize();
 
     FileUtils::getInstance()->addSearchPath("res");
+    FileUtils::getInstance()->addSearchPath("fonts");
 
     std::vector<std::string> searchResolutionOrder(1);
 

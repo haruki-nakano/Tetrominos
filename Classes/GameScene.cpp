@@ -12,6 +12,7 @@
 #include "SceneManager.h"
 #include "Grid.h"
 #include "Tetromino.h"
+#include "UIConstants.h"
 
 using namespace cocos2d;
 
@@ -28,6 +29,7 @@ bool GameScene::init() {
 
     this->tetrominoBag = std::unique_ptr<TetrominoBag>(new TetrominoBag());
     this->active = false;
+    this->totalScore = 0;
 
     return true;
 }
@@ -36,12 +38,14 @@ void GameScene::onEnter() {
 
     Size visibleSize = Director::getInstance()->getVisibleSize();
 
+    // setup grid
     grid = Grid::create();
     grid->setAnchorPoint(Vec2(0.5f, 0.0f));
     grid->setPosition(Vec2(visibleSize.width * 0.5f, 0.0f));
 
     this->addChild(grid);
 
+    // setup menus
     ui::Button *backButton = ui::Button::create();
     backButton->setAnchorPoint(Vec2(0.0f, 1.0f));
     backButton->setPosition(Vec2(0.0f, visibleSize.height));
@@ -50,8 +54,13 @@ void GameScene::onEnter() {
 
     this->addChild(backButton);
 
-    Tetromino *randomTest = createRandomTetromino();
-    grid->spawnTetromino(randomTest);
+    // setup labels
+    this->scoreLabel = ui::Text::create("0", FONT_NAME, FONT_SIZE);
+    this->scoreLabel->setAnchorPoint(Vec2(0.5f, 1.0f));
+    this->scoreLabel->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.95f));
+    this->scoreLabel->setColor(LABEL_COLOR);
+
+    this->addChild(this->scoreLabel);
 
     setupTouchHandling();
 
@@ -125,6 +134,7 @@ void GameScene::setupTouchHandling() {
 
                 if (velocity > DROP_VELOCITY) {
                     grid->dropActiveTetromino();
+                    this->updateStateFromScore();
                 }
             }
         }
@@ -156,6 +166,7 @@ void GameScene::step(float dt) {
         this->grid->spawnTetromino(newTetromino);
     } else {
         this->grid->step();
+        this->updateStateFromScore();
     }
 }
 
@@ -165,6 +176,15 @@ Tetromino *GameScene::createRandomTetromino() {
     return newTetromino;
 }
 
+void GameScene::updateStateFromScore() {
+    int newScore = this->grid->getScore();
+
+    if (newScore > this->totalScore) {
+        this->totalScore = newScore;
+        this->updateScoreLabel(newScore);
+    }
+}
+
 #pragma mark -
 #pragma mark UI Methods
 
@@ -172,6 +192,11 @@ void GameScene::backButtonPressed(cocos2d::Ref *pSender, ui::Widget::TouchEventT
     if (eEventType == ui::Widget::TouchEventType::ENDED) {
         SceneManager::getInstance()->returnToLobby();
     }
+}
+
+void GameScene::updateScoreLabel(int score) {
+    std::string scoreString = StringUtils::toString(score);
+    this->scoreLabel->setString(scoreString);
 }
 
 #pragma mark -
