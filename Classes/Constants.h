@@ -21,6 +21,8 @@ static const float SPEED_MAX = .1;
 
 static const float DROP_VELOCITY = 10000.0f;
 
+static const float TIME_PER_GAME = 120.0f;
+
 enum class TetrominoType {
     I = 0,
     O = 1,
