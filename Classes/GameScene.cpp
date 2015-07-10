@@ -24,6 +24,8 @@ bool GameScene::init() {
         return false;
     }
 
+    this->stepInterval = INITIAL_STEP_INTERVAL;
+
     LayerColor *background = LayerColor::create(Color4B(255, 255, 255, 255));
     this->addChild(background);
 
@@ -152,7 +154,7 @@ void GameScene::setupTouchHandling() {
 void GameScene::setGameActive(bool active) {
     this->active = active;
     if (active) {
-        this->schedule(CC_SCHEDULE_SELECTOR(GameScene::step), INITIAL_STEP_INTERVAL);
+        this->schedule(CC_SCHEDULE_SELECTOR(GameScene::step), this->stepInterval);
     } else {
         this->unschedule(CC_SCHEDULE_SELECTOR(GameScene::step));
     }
@@ -182,7 +184,22 @@ void GameScene::updateStateFromScore() {
     if (newScore > this->totalScore) {
         this->totalScore = newScore;
         this->updateScoreLabel(newScore);
+        this->updateGameSpeed(totalScore);
     }
+}
+
+void GameScene::updateGameSpeed(int score) {
+    int stepAcceleration = score / SCORE_TO_ACCELERATE;
+
+    float intervalDeduction = powf(ACCELERATION_FACTOR, stepAcceleration);
+
+    float newInterval = MAX(intervalDeduction, SPEED_MAX);
+
+    this->stepInterval = newInterval;
+    // CCLOG("%f", stepInterval);
+
+    this->unschedule(CC_SCHEDULE_SELECTOR(GameScene::step));
+    this->schedule(CC_SCHEDULE_SELECTOR(GameScene::step), this->stepInterval);
 }
 
 #pragma mark -
