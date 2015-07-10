@@ -161,6 +161,10 @@ void GameScene::setGameActive(bool active) {
 }
 
 void GameScene::step(float dt) {
+    if (this->grid->checkIfTopReached()) {
+        gameOver();
+    }
+
     Tetromino *activeTetromino = grid->getActiveTetromino();
 
     if (!activeTetromino) {
@@ -200,6 +204,16 @@ void GameScene::updateGameSpeed(int score) {
 
     this->unschedule(CC_SCHEDULE_SELECTOR(GameScene::step));
     this->schedule(CC_SCHEDULE_SELECTOR(GameScene::step), this->stepInterval);
+}
+
+void GameScene::gameOver() {
+    this->setGameActive(false);
+
+    std::string scoreString = StringUtils::toString(this->totalScore);
+    std::string messageContent = "Your score is " + scoreString + "!";
+    MessageBox(messageContent.c_str(), "GAMEOVER");
+
+    SceneManager::getInstance()->returnToLobby();
 }
 
 #pragma mark -

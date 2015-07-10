@@ -96,6 +96,15 @@ void Grid::step() {
     }
 }
 
+bool Grid::checkIfTopReached() {
+    for (Sprite *block : blocksLanded.back()) {
+        if (block) {
+            return true;
+        }
+    }
+    return false;
+}
+
 #pragma mark -
 #pragma mark Setters / Getters
 
