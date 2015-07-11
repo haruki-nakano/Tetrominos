@@ -151,3 +151,7 @@ std::vector<Coordinate> Tetromino::getCurrentRotation() {
 TetrominoType Tetromino::getTetrominoType() {
     return this->type;
 }
+
+Color3B Tetromino::getTetrominoColor() {
+    return this->color;
+}

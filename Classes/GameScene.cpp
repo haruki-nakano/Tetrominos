@@ -13,6 +13,9 @@
 #include "Grid.h"
 #include "Tetromino.h"
 #include "UIConstants.h"
+#include "JSONPacker.h"
+#include "NetworkingWrapper.h"
+#include "PreviewGrid.h"
 
 using namespace cocos2d;
 
@@ -34,6 +37,7 @@ bool GameScene::init() {
     this->totalScore = 0;
     this->timeLeft = TIME_PER_GAME;
     this->networkedSession = false;
+    this->gameIsOver = false;
 
     return true;
 }
@@ -71,6 +75,18 @@ void GameScene::onEnter() {
 
     this->addChild(this->scoreLabel);
     this->addChild(this->timeLeftLabel);
+
+    if (networkedSession) {
+        this->grid->setAnchorPoint(Vec2(0.0f, 0.0f));
+        this->grid->setPosition(Vec2(0.0f, 0.0f));
+
+        this->previewGrid = PreviewGrid::create();
+        this->previewGrid->setAnchorPoint(Vec2(1.0f, 1.0f));
+        this->previewGrid->setPosition(Vec2(visibleSize.width, visibleSize.height));
+        this->previewGrid->setScale(0.5f);
+
+        this->addChild(this->previewGrid);
+    }
 
     setupTouchHandling();
 
@@ -160,6 +176,19 @@ void GameScene::setNetworkedSession(bool networkedSession) {
     this->networkedSession = networkedSession;
 }
 
+void GameScene::receivedData(const void *data, unsigned long length) {
+    const char *cstr = reinterpret_cast<const char *>(data);
+    std::string json = std::string(cstr, length);
+
+    JSONPacker::GameState state = JSONPacker::unpackGameStateJSON(json);
+
+    if (state.gameOver) {
+        this->gameOver();
+    }
+
+    this->previewGrid->setState(state);
+}
+
 #pragma mark -
 #pragma mark Protected Methods
 
@@ -187,6 +216,10 @@ void GameScene::step(float dt) {
     } else {
         this->grid->step();
         this->updateStateFromScore();
+    }
+
+    if (networkedSession) {
+        this->sendGameStateOverNetwork();
     }
 }
 
@@ -231,7 +264,12 @@ void GameScene::updateGameSpeed(int score) {
 }
 
 void GameScene::gameOver() {
+    this->gameIsOver = true;
     this->setGameActive(false);
+
+    if (networkedSession) {
+        this->sendGameStateOverNetwork();
+    }
 
     std::string scoreString = StringUtils::toString(this->totalScore);
     std::string messageContent = "Your score is " + scoreString + "!";
@@ -245,6 +283,47 @@ void GameScene::setTimeLeft(float time) {
     std::string timeLeftString = StringUtils::format("%2.1f", time);
 
     this->timeLeftLabel->setString(timeLeftString);
+}
+
+void GameScene::sendGameStateOverNetwork() {
+    JSONPacker::GameState state;
+
+    state.name = NetworkingWrapper::getDeviceName();
+    state.score = this->totalScore;
+    state.gameOver = this->gameIsOver;
+
+    std::vector<std::vector<Sprite *>> blocksLanded = this->grid->getBlocksLanded();
+
+    for (int y = 0; y < blocksLanded.size(); y++) {
+        std::vector<Color3B> blocks(blocksLanded.size(), Color3B::WHITE);
+        state.board.push_back(blocks);
+
+        std::vector<Sprite *> column = blocksLanded[y];
+        for (int x = 0; x < column.size(); x++) {
+            Sprite *block = column[x];
+
+            if (block) {
+                state.board[y][x] = block->getColor();
+            }
+        }
+    }
+
+    Tetromino *activeTetromino = this->grid->getActiveTetromino();
+
+    if (activeTetromino) {
+        std::vector<Coordinate> coordinates = activeTetromino->getCurrentRotation();
+        Coordinate tetrominoCoordinate = this->grid->getActiveTetrominoCoordinate();
+
+        for (Coordinate blockCoordinate : coordinates) {
+            Coordinate gridCoordinate = Coordinate::add(tetrominoCoordinate, blockCoordinate);
+            if (gridCoordinate.x < GRID_WIDTH && gridCoordinate.y < GRID_HEIGHT) {
+                state.board[gridCoordinate.y][gridCoordinate.x] = activeTetromino->getTetrominoColor();
+            }
+        }
+    }
+
+    std::string json = JSONPacker::packGameStateJSON(state);
+    SceneManager::getInstance()->sendData(json.c_str(), json.length());
 }
 
 #pragma mark -

@@ -11,15 +11,17 @@
 
 class NetworkManagerDelegate;
 
-@interface NetworkManager : NSObject <MCBrowserViewControllerDelegate, MCSessionDelegate>
+@interface NetworkManager : NSObject<MCBrowserViewControllerDelegate, MCSessionDelegate>
 
-- (void)setDelegate:(NetworkManagerDelegate*)delegate;
+- (void)setDelegate:(NetworkManagerDelegate *)delegate;
 
 - (void)startAdvertisingAvailability;
 
+- (void)stopAdvertisingAvailability;
+
 - (void)showPeerList;
 
-- (void)sendData:(NSData*)data;
+- (void)sendData:(NSData *)data;
 
 - (void)disconnect;
 

@@ -88,10 +88,10 @@ GameState unpackGameStateJSON(std::string json) {
 
     // Convert Color3B in the grid to JSON obejcts
     for (rapidjson::SizeType column = 0; column < columns.Size(); column++) {
-        rapidjson::Value &blocksJson = columns["column"];
+        rapidjson::Value &blocksJson = columns[column];
         std::vector<Color3B> blocks;
 
-        for (rapidjson::SizeType i; i < blocksJson.Size(); i++) {
+        for (rapidjson::SizeType i = 0; i < blocksJson.Size(); i++) {
             rapidjson::Value &block = blocksJson[i];
             int r = block["r"].GetInt();
             int g = block["g"].GetInt();
@@ -115,9 +115,9 @@ std::string packGameStateJSON(const GameState gameState) {
     document.AddMember("gameOver", gameState.gameOver, document.GetAllocator());
 
     rapidjson::Value columns(rapidjson::kArrayType);
-    for (int column; column < gameState.board.size(); column++) {
+    for (int column = 0; column < gameState.board.size(); column++) {
         rapidjson::Value blocks(rapidjson::kArrayType);
-        for (int i; i < gameState.board[column].size(); i++) {
+        for (int i = 0; i < gameState.board[column].size(); i++) {
             Color3B color = gameState.board[column][i];
             rapidjson::Value colorJson(rapidjson::kObjectType);
             colorJson.AddMember("r", color.r, document.GetAllocator());
@@ -125,7 +125,9 @@ std::string packGameStateJSON(const GameState gameState) {
             colorJson.AddMember("b", color.b, document.GetAllocator());
 
             blocks.PushBack(colorJson, document.GetAllocator());
+            CCLOG("index");
         }
+        CCLOG("column");
         columns.PushBack(blocks, document.GetAllocator());
     }
 
@@ -137,6 +139,7 @@ std::string packGameStateJSON(const GameState gameState) {
 
     std::string returnString(buffer.GetString(), buffer.Size());
 
+    CCLOG("%s", returnString.c_str());
     return returnString;
 }
 }

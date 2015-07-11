@@ -142,6 +142,10 @@ int Grid::getScore() {
     return this->score;
 }
 
+std::vector<std::vector<cocos2d::Sprite *>> Grid::getBlocksLanded() {
+    return blocksLanded;
+}
+
 #pragma mark -
 #pragma mark Private Methods
 

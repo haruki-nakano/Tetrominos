@@ -78,6 +78,8 @@
 		71B8F6001B506837000B3AED /* NetworkingWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71B8F5FC1B506837000B3AED /* NetworkingWrapper.mm */; };
 		71B8F6011B506837000B3AED /* NetworkManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 71B8F5FE1B506837000B3AED /* NetworkManager.mm */; };
 		71B8F6071B50783E000B3AED /* MultipeerConnectivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71B8F6061B50783E000B3AED /* MultipeerConnectivity.framework */; };
+		71B8F6101B508AFF000B3AED /* PreviewGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71B8F60E1B508AFF000B3AED /* PreviewGrid.cpp */; };
+		71B8F6111B508AFF000B3AED /* PreviewGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71B8F60E1B508AFF000B3AED /* PreviewGrid.cpp */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
@@ -194,6 +196,8 @@
 		71B8F5FE1B506837000B3AED /* NetworkManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NetworkManager.mm; sourceTree = "<group>"; };
 		71B8F5FF1B506837000B3AED /* NetworkManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManagerDelegate.h; sourceTree = "<group>"; };
 		71B8F6061B50783E000B3AED /* MultipeerConnectivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultipeerConnectivity.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/System/Library/Frameworks/MultipeerConnectivity.framework; sourceTree = DEVELOPER_DIR; };
+		71B8F60E1B508AFF000B3AED /* PreviewGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PreviewGrid.cpp; sourceTree = "<group>"; };
+		71B8F60F1B508AFF000B3AED /* PreviewGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewGrid.h; sourceTree = "<group>"; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -428,6 +432,8 @@
 				71082D811B44A490006512F0 /* Grid.h */,
 				71082D841B44A84D006512F0 /* Tetromino.cpp */,
 				71082D851B44A84D006512F0 /* Tetromino.h */,
+				71B8F60E1B508AFF000B3AED /* PreviewGrid.cpp */,
+				71B8F60F1B508AFF000B3AED /* PreviewGrid.h */,
 			);
 			name = GameSprites;
 			sourceTree = "<group>";
@@ -599,6 +605,7 @@
 				71082D7E1B4498E7006512F0 /* SceneManager.cpp in Sources */,
 				71082D741B447DD0006512F0 /* Lobby.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
+				71B8F6101B508AFF000B3AED /* PreviewGrid.cpp in Sources */,
 				71082D791B44861A006512F0 /* GameScene.cpp in Sources */,
 				71082D8E1B44AFCD006512F0 /* Coordinate.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
@@ -617,6 +624,7 @@
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				71082D7F1B4498E7006512F0 /* SceneManager.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
+				71B8F6111B508AFF000B3AED /* PreviewGrid.cpp in Sources */,
 				71082D751B447DD0006512F0 /* Lobby.cpp in Sources */,
 				71082D831B44A490006512F0 /* Grid.cpp in Sources */,
 				71082D8F1B44AFCD006512F0 /* Coordinate.cpp in Sources */,

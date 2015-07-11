@@ -11,15 +11,13 @@
 #pragma mark -
 #pragma mark Lifecycle
 
-NetworkingWrapper::NetworkingWrapper()
-{
+NetworkingWrapper::NetworkingWrapper() {
     this->networkManager = [[NetworkManager alloc] init];
     [this->networkManager setDelegate:this];
     [networkManager retain];
 }
 
-NetworkingWrapper::~NetworkingWrapper()
-{
+NetworkingWrapper::~NetworkingWrapper() {
     [networkManager release];
     networkManager = nil;
 }
@@ -27,54 +25,47 @@ NetworkingWrapper::~NetworkingWrapper()
 #pragma mark -
 #pragma mark Public Methods
 
-void NetworkingWrapper::setDelegate(NetworkingDelegate* delegate)
-{
+void NetworkingWrapper::setDelegate(NetworkingDelegate *delegate) {
     this->delegate = delegate;
 }
 
-void NetworkingWrapper::startAdvertisingAvailability()
-{
+void NetworkingWrapper::startAdvertisingAvailability() {
     [this->networkManager startAdvertisingAvailability];
 }
 
-void NetworkingWrapper::showPeerList()
-{
+void NetworkingWrapper::stopAdvertisingAvailability() {
+    [this->networkManager stopAdvertisingAvailability];
+}
+
+void NetworkingWrapper::showPeerList() {
     [this->networkManager showPeerList];
 }
 
-void NetworkingWrapper::sendData(const void *data, unsigned long length)
-{
-    NSData* dataToSend = [NSData dataWithBytes:data length:length];
+void NetworkingWrapper::sendData(const void *data, unsigned long length) {
+    NSData *dataToSend = [NSData dataWithBytes:data length:length];
     [this->networkManager sendData:dataToSend];
 }
 
-void NetworkingWrapper::disconnect()
-{
+void NetworkingWrapper::disconnect() {
     [this->networkManager disconnect];
 }
 
-const char * NetworkingWrapper::getDeviceName()
-{
-    NSString* deviceName = [UIDevice currentDevice].name;
+const char *NetworkingWrapper::getDeviceName() {
+    NSString *deviceName = [UIDevice currentDevice].name;
     return [deviceName UTF8String];
 }
-
 
 #pragma mark -
 #pragma mark NetworkManager Delegate Methods
 
-void NetworkingWrapper::receivedData(const void *data, unsigned long length)
-{
-    if (this->delegate)
-    {
+void NetworkingWrapper::receivedData(const void *data, unsigned long length) {
+    if (this->delegate) {
         this->delegate->receivedData(data, length);
     }
 }
 
-void NetworkingWrapper::stateChanged(ConnectionState state)
-{
-    if (this->delegate)
-    {
+void NetworkingWrapper::stateChanged(ConnectionState state) {
+    if (this->delegate) {
         this->delegate->stateChanged(state);
     }
 }

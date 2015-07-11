@@ -19,36 +19,36 @@ typedef struct objc_object NetworkManager;
 
 // Classes that want to be notified by networking activity should inherit from this class
 // and set themselves as the delegate
-class NetworkingDelegate
-{
+class NetworkingDelegate {
 public:
-    virtual void receivedData(const void* data, unsigned long length) = 0;
+    virtual void receivedData(const void *data, unsigned long length) = 0;
     virtual void stateChanged(ConnectionState state) = 0;
 };
 
-class NetworkingWrapper : public NetworkManagerDelegate
-{
+class NetworkingWrapper : public NetworkManagerDelegate {
 public:
     NetworkingWrapper();
     ~NetworkingWrapper();
-    
-    void setDelegate(NetworkingDelegate* delegate);
-    
+
+    void setDelegate(NetworkingDelegate *delegate);
+
     void startAdvertisingAvailability();
-    
+
+    void stopAdvertisingAvailability();
+
     void showPeerList();
-    
-    void sendData(const void* data, unsigned long length);
-    
-    static const char * getDeviceName();
-    
+
+    void sendData(const void *data, unsigned long length);
+
+    static const char *getDeviceName();
+
     void disconnect();
-    
+
 private:
-    NetworkManager* networkManager;
-    NetworkingDelegate* delegate;
-    
-    void receivedData(const void* data, unsigned long length);
+    NetworkManager *networkManager;
+    NetworkingDelegate *delegate;
+
+    void receivedData(const void *data, unsigned long length);
     void stateChanged(ConnectionState state);
 };
 

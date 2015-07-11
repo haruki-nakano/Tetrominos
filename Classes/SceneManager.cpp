@@ -25,6 +25,7 @@ SceneManager *SceneManager::getInstance() {
 }
 
 SceneManager::SceneManager() {
+    gameScene = nullptr;
     this->networkingWrapper = std::unique_ptr<NetworkingWrapper>(new NetworkingWrapper());
     this->networkingWrapper->setDelegate(this);
 }
@@ -37,8 +38,8 @@ SceneManager::~SceneManager() {
 
 void SceneManager::enterGameScene(bool networked) {
     Scene *scene = Scene::create();
-    GameScene *gameScene = GameScene::create();
-    gameScene->setNetworkedSession(networked);
+    this->gameScene = GameScene::create();
+    this->gameScene->setNetworkedSession(networked);
 
     scene->addChild(gameScene);
 
@@ -46,7 +47,11 @@ void SceneManager::enterGameScene(bool networked) {
 }
 
 void SceneManager::returnToLobby() {
-    Director::getInstance()->popScene();
+    if (gameScene) {
+        Director::getInstance()->popScene();
+        gameScene = nullptr;
+        networkingWrapper->disconnect();
+    }
 }
 
 void SceneManager::showPeerList() {
@@ -57,10 +62,17 @@ void SceneManager::receiveMultiplayerInvitations() {
     networkingWrapper->startAdvertisingAvailability();
 }
 
+void SceneManager::sendData(const void *data, unsigned long length) {
+    networkingWrapper->sendData(data, length);
+}
+
 #pragma mark -
 #pragma mark NetworkingWrapperDelegate Methods
 
 void SceneManager::receivedData(const void *data, unsigned long length) {
+    if (gameScene) {
+        gameScene->receivedData(data, length);
+    }
 }
 
 void SceneManager::stateChanged(ConnectionState state) {
@@ -72,7 +84,8 @@ void SceneManager::stateChanged(ConnectionState state) {
             CCLOG("Not connected");
             break;
         case ConnectionState::CONNECTED:
-            CCLOG("connected");
+            this->networkingWrapper->stopAdvertisingAvailability();
+            this->enterGameScene(true);
             break;
     }
 }
